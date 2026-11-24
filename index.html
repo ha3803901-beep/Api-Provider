@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FreeAI API Hub — Premium Developer Directory of Free AI APIs</title>
+<meta name="description" content="A professionally curated directory of free AI API providers. Copy base URLs, grab free API keys and ship production AI features without upfront costs." />
+
+<!-- Adds a JS flag on <html> so reveal styles only apply when JS is active.
+     Falls back gracefully: without JS the page stays fully visible. -->
+<script>document.documentElement.classList.add('js');</script>
+
+<!-- ============ Google Fonts (Inter + JetBrains Mono) ============ -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+/* ==========================================================================
+   FREEAI API HUB — PREMIUM DARK THEME + MOTION SYSTEM
+   --------------------------------------------------------------------------
+   Sections:
+     1. Design tokens
+     2. Reset & base
+     3. Layout primitives
+     4. Header
+     5. Hero + search + filters
+     6. Card grid
+     7. Modals (guide + submit)
+     8. Forms
+     9. Toast
+    10. Footer
+    11. Scroll-reveal & motion system  ← NEW
+    12. Interactive effects (ripple, spotlight, press)  ← NEW
+    13. Responsive
+   ========================================================================== */
+
+/* ==========================================================================
+   1. DESIGN TOKENS
+   ========================================================================== */
+:root{
+  --bg-0:#05060a;
+  --bg-1:#080a10;
+  --bg-2:#0b0e16;
+  --bg-3:#10141e;
+
+  --glass-1:rgba(255,255,255,.028);
+  --glass-2:rgba(255,255,255,.045);
+  --glass-3:rgba(255,255,255,.07);
+
+  --line-1:rgba(255,255,255,.07);
+  --line-2:rgba(255,255,255,.11);
+  --line-3:rgba(255,255,255,.18);
+
+  --ink-0:#f2f4fa;
+  --ink-1:#cdd3e3;
+  --ink-2:#8b93a8;
+  --ink-3:#5d657c;
+
+  --indigo:#6366f1;
+  --indigo-2:#818cf8;
+  --indigo-3:#a5b4fc;
+  --indigo-soft:rgba(99,102,241,.14);
+  --indigo-line:rgba(99,102,241,.32);
+
+  --emerald:#10b981;
+  --emerald-2:#34d399;
+  --emerald-3:#6ee7b7;
+  --emerald-soft:rgba(16,185,129,.12);
+  --emerald-line:rgba(16,185,129,.32);
+
+  --sky:#38bdf8;
+  --sky-soft:rgba(56,189,248,.10);
+  --sky-line:rgba(56,189,248,.30);
+
+  --amber:#f59e0b;
+  --amber-soft:rgba(245,158,11,.10);
+  --amber-line:rgba(245,158,11,.30);
+
+  --r-sm:10px;
+  --r-md:14px;
+  --r-lg:18px;
+  --r-xl:24px;
+
+  --font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --shadow-md:0 12px 32px -12px rgba(0,0,0,.65);
+  --shadow-lg:0 32px 64px -32px rgba(0,0,0,.85);
+  --shadow-glow:0 24px 56px -24px rgba(99,102,241,.55);
+
+  /* Shared easing used by the whole motion system */
+  --ease-out-expo:cubic-bezier(0.22, 1, 0.36, 1);
+
+  --container:1200px;
+}
+
+/* ==========================================================================
+   2. RESET & BASE
+   ========================================================================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{
+  scroll-behavior:smooth;
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+body{
+  min-height:100vh;
+  font-family:var(--font-sans);
+  font-size:15px;
+  line-height:1.6;
+  color:var(--ink-0);
+  background:var(--bg-0);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+  font-feature-settings:"cv02","cv03","cv04","cv11";
+}
+body.modal-open{overflow:hidden;}
+
+/* Ambient background glows */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  background:
+    radial-gradient(1100px 620px at 8% -14%, rgba(99,102,241,.20), transparent 60%),
+    radial-gradient(900px 540px at 92% -10%, rgba(16,185,129,.12), transparent 62%),
+    radial-gradient(1000px 700px at 50% 116%, rgba(99,102,241,.10), transparent 60%),
+    var(--bg-0);
+}
+/* Fine grid texture */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse at 50% 0%, #000 30%, transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 0%, #000 30%, transparent 78%);
+}
+
+a{color:inherit;text-decoration:none;}
+button,input,select,textarea{font:inherit;color:inherit;}
+button{background:none;border:none;cursor:pointer;padding:0;}
+img,svg{display:block;max-width:100%;}
+code{font-family:var(--font-mono);}
+
+::selection{background:rgba(99,102,241,.42);color:#fff;}
+
+::-webkit-scrollbar{width:11px;height:11px;}
+::-webkit-scrollbar-track{background:var(--bg-1);}
+::-webkit-scrollbar-thumb{
+  background:#1d2233;
+  border-radius:999px;
+  border:3px solid var(--bg-1);
+}
+::-webkit-scrollbar-thumb:hover{background:#2a3149;}
+
+:focus-visible{
+  outline:2px solid var(--indigo-2);
+  outline-offset:3px;
+  border-radius:6px;
+}
+
+/* ==========================================================================
+   3. LAYOUT PRIMITIVES
+   ========================================================================== */
+.container{
+  width:100%;
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 24px;
+}
+
+/* Anchor offset so sticky header doesn't cover targets */
+#cardGrid{scroll-margin-top:96px;}
+
+/* ==========================================================================
+   4. HEADER
+   ========================================================================== */
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:60;
+  background:rgba(5,6,10,.72);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border-bottom:1px solid var(--line-1);
+}
+.header-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  height:72px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:700;
+  letter-spacing:-.02em;
+  font-size:15.5px;
+  white-space:nowrap;
+}
+.brand-mark{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  font-size:15px;
+  font-weight:800;
+  color:#fff;
+  background:linear-gradient(135deg,#6366f1 0%,#4f46e5 55%,#10b981 130%);
+  box-shadow:
+    0 10px 24px -10px rgba(99,102,241,.95),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  flex:none;
+  position:relative;
+}
+.brand-mark::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:linear-gradient(180deg, rgba(255,255,255,.18), transparent 55%);
+  pointer-events:none;
+}
+.brand-meta{display:flex;flex-direction:column;line-height:1.15;}
+.brand-title{font-size:15px;font-weight:700;letter-spacing:-.02em;color:var(--ink-0);}
+.brand-sub{
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+  margin-top:3px;
+}
+
+.header-actions{display:flex;align-items:center;gap:10px;}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:11px 18px;
+  border-radius:11px;
+  font-size:13.5px;
+  font-weight:600;
+  letter-spacing:-.005em;
+  white-space:nowrap;
+  border:1px solid transparent;
+  transition:
+    transform .16s cubic-bezier(.2,.8,.2,1),
+    background .18s ease,
+    border-color .18s ease,
+    box-shadow .22s ease,
+    color .18s ease;
+  position:relative;
+  isolation:isolate;
+  overflow:hidden; /* clip the ripple */
+}
+.btn:active{transform:translateY(1px) scale(0.97);}
+
+.btn-primary{
+  color:#fff;
+  background:linear-gradient(180deg,#6f74f3 0%,#4f46e5 100%);
+  border-color:rgba(255,255,255,.10);
+  box-shadow:
+    0 12px 28px -14px rgba(99,102,241,.95),
+    inset 0 1px 0 rgba(255,255,255,.22);
+}
+.btn-primary:hover{
+  background:linear-gradient(180deg,#7c81f6 0%,#5a52ea 100%);
+  box-shadow:
+    0 16px 36px -14px rgba(99,102,241,1),
+    inset 0 1px 0 rgba(255,255,255,.28);
+}
+
+.btn-emerald{
+  color:#031712;
+  background:linear-gradient(180deg,#34d399 0%,#10b981 100%);
+  border-color:rgba(255,255,255,.14);
+  box-shadow:
+    0 12px 28px -14px rgba(16,185,129,.95),
+    inset 0 1px 0 rgba(255,255,255,.32);
+  font-weight:700;
+}
+.btn-emerald:hover{
+  background:linear-gradient(180deg,#3fe0a5 0%,#12c78b 100%);
+  box-shadow:
+    0 16px 36px -14px rgba(16,185,129,1),
+    inset 0 1px 0 rgba(255,255,255,.36);
+}
+
+.btn-ghost{
+  color:var(--ink-1);
+  background:var(--glass-1);
+  border-color:var(--line-2);
+}
+.btn-ghost:hover{
+  color:#fff;
+  background:var(--glass-2);
+  border-color:var(--indigo-line);
+}
+
+.btn-block{width:100%;padding:12px 18px;}
+
+/* Copy buttons */
+.copy-btn{
+  flex:none;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 11px;
+  border-radius:7px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.02em;
+  color:var(--emerald-3);
+  background:var(--emerald-soft);
+  border:1px solid var(--emerald-line);
+  transition:background .16s ease, color .16s ease, border-color .16s ease, transform .1s ease;
+  position:relative;
+  overflow:hidden;
+}
+.copy-btn:hover{background:rgba(16,185,129,.22);border-color:rgba(16,185,129,.55);}
+.copy-btn:active{transform:scale(0.94);}
+
+/* Icon button */
+.icon-btn{
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  border-radius:9px;
+  color:var(--ink-2);
+  background:var(--glass-1);
+  border:1px solid var(--line-1);
+  transition:background .16s ease,color .16s ease,border-color .16s ease,transform .12s ease;
+  position:relative;
+  overflow:hidden;
+}
+.icon-btn:hover{background:var(--glass-3);color:#fff;border-color:var(--line-3);}
+.icon-btn:active{transform:scale(0.92);}
+
+/* ==========================================================================
+   5. HERO
+   ========================================================================== */
+.hero{
+  padding:88px 0 52px;
+  text-align:center;
+  position:relative;
+}
+
+/* Badge wrapper handles reveal, inner badge handles float — so no
+   transform conflict between the two animations. */
+.hero-badge-wrap{
+  display:inline-block;
+  margin-bottom:26px;
+}
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:7px 15px 7px 11px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.005em;
+  color:var(--emerald-3);
+  background:rgba(16,185,129,.075);
+  border:1px solid var(--emerald-line);
+  backdrop-filter:blur(6px);
+  animation:float 4.2s ease-in-out infinite;
+  will-change:transform;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-6px);}
+}
+
+.pulse-dot{
+  width:7px;height:7px;
+  border-radius:50%;
+  background:var(--emerald-2);
+  box-shadow:0 0 8px rgba(16,185,129,.9);
+  animation:pulse 2.4s ease-out infinite;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(16,185,129,.55),0 0 8px rgba(16,185,129,.9);}
+  70%{box-shadow:0 0 0 10px rgba(16,185,129,0),0 0 8px rgba(16,185,129,.9);}
+  100%{box-shadow:0 0 0 0 rgba(16,185,129,0),0 0 8px rgba(16,185,129,.9);}
+}
+
+.hero h1{
+  font-size:clamp(2.15rem,5.4vw,3.6rem);
+  line-height:1.06;
+  letter-spacing:-.042em;
+  font-weight:800;
+  margin-bottom:22px;
+  color:var(--ink-0);
+}
+.hero h1 .grad{
+  background:linear-gradient(100deg,#a5b4fc 0%,#818cf8 30%,#6366f1 55%,#10b981 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  display:inline-block;
+}
+
+.hero-sub{
+  max-width:620px;
+  margin:0 auto 40px;
+  font-size:clamp(.94rem,1.55vw,1.02rem);
+  line-height:1.7;
+  color:var(--ink-2);
+  letter-spacing:-.005em;
+}
+
+/* Search */
+.search-wrap{
+  position:relative;
+  max-width:620px;
+  margin:0 auto 24px;
+}
+.search-icon{
+  position:absolute;
+  left:18px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--ink-3);
+  pointer-events:none;
+  transition:color .18s ease;
+}
+.search-wrap:focus-within .search-icon{color:var(--indigo-3);}
+
+.search-input{
+  width:100%;
+  padding:17px 108px 17px 48px;
+  border-radius:14px;
+  font-size:14.5px;
+  color:var(--ink-0);
+  background:var(--glass-1);
+  border:1px solid var(--line-2);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  outline:none;
+  transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
+  letter-spacing:-.005em;
+}
+.search-input::placeholder{color:var(--ink-3);}
+.search-input:focus{
+  border-color:var(--indigo-line);
+  background:var(--glass-2);
+  box-shadow:0 0 0 4px rgba(99,102,241,.14), 0 12px 32px -20px rgba(99,102,241,.6);
+}
+.search-input::-webkit-search-cancel-button{
+  -webkit-appearance:none;
+  appearance:none;
+}
+
+.search-kbd{
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-size:10.5px;
+  font-weight:600;
+  color:var(--ink-3);
+  pointer-events:none;
+  letter-spacing:.02em;
+}
+.search-kbd kbd{
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  padding:3px 7px;
+  border-radius:6px;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--line-2);
+  color:var(--ink-2);
+  line-height:1;
+}
+
+/* Filters */
+.filters{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  margin-bottom:18px;
+}
+.pill{
+  padding:8px 16px;
+  border-radius:999px;
+  font-size:12.5px;
+  font-weight:600;
+  letter-spacing:.005em;
+  color:var(--ink-2);
+  background:var(--glass-1);
+  border:1px solid var(--line-1);
+  transition:color .16s ease, background .16s ease, border-color .16s ease, box-shadow .2s ease, transform .14s ease;
+  position:relative;
+  overflow:hidden;
+}
+.pill:hover{color:var(--ink-0);background:var(--glass-2);border-color:var(--line-2);}
+.pill:active{transform:scale(0.96);}
+.pill.is-active{
+  color:#fff;
+  background:linear-gradient(180deg,#6366f1 0%,#4f46e5 100%);
+  border-color:rgba(255,255,255,.14);
+  box-shadow:
+    0 10px 22px -12px rgba(99,102,241,.95),
+    inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+.result-count{
+  font-size:12px;
+  color:var(--ink-3);
+  font-family:var(--font-mono);
+  letter-spacing:.02em;
+}
+
+/* ==========================================================================
+   6. CARD GRID
+   ========================================================================== */
+.grid-section{padding:24px 0 100px;}
+
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));
+  gap:22px;
+}
+
+.card{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  padding:24px;
+  border-radius:var(--r-lg);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.048), rgba(255,255,255,.014));
+  border:1px solid var(--line-1);
+  backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+  transition:
+    transform .3s var(--ease-out-expo),
+    border-color .3s ease,
+    box-shadow .3s ease;
+  overflow:hidden;
+}
+/* Top glass rim highlight */
+.card::before{
+  content:'';
+  position:absolute;
+  inset:0 0 auto 0;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+  pointer-events:none;
+}
+/* Spotlight glow — position driven by --mx / --my via JS pointermove */
+.card::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(99,102,241,.20),
+    rgba(99,102,241,.06) 34%,
+    transparent 62%
+  );
+  opacity:0;
+  transition:opacity .35s ease;
+  pointer-events:none;
+  z-index:0;
+}
+.card:hover::after{opacity:1;}
+
+.card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(99,102,241,.42);
+  box-shadow:
+    0 26px 52px -26px rgba(99,102,241,.65),
+    0 0 0 1px rgba(99,102,241,.10) inset,
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+/* Tactile press — compress and drop the lift */
+.card:active{
+  transform:translateY(-2px) scale(0.97);
+  transition-duration:.12s;
+}
+
+/* Card children sit above the spotlight layer */
+.card > *{
+  position:relative;
+  z-index:1;
+}
+
+.card-head{display:flex;align-items:flex-start;gap:13px;}
+
+.avatar{
+  width:44px;
+  height:44px;
+  flex:none;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:800;
+  color:#fff;
+  background:linear-gradient(135deg, rgba(99,102,241,.95), rgba(16,185,129,.82));
+  box-shadow:
+    0 12px 22px -12px rgba(99,102,241,.95),
+    inset 0 1px 0 rgba(255,255,255,.24);
+  position:relative;
+}
+.avatar::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:linear-gradient(180deg, rgba(255,255,255,.18), transparent 60%);
+  pointer-events:none;
+}
+
+.card-title{min-width:0;flex:1;}
+.card-title h3{
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:-.022em;
+  line-height:1.25;
+  margin-bottom:8px;
+  color:var(--ink-0);
+}
+.badges{display:flex;flex-wrap:wrap;gap:5px;}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  padding:3px 9px;
+  border-radius:999px;
+  font-size:10.5px;
+  font-weight:600;
+  letter-spacing:.015em;
+  white-space:nowrap;
+  line-height:1.5;
+}
+.badge-indigo{color:var(--indigo-3);background:var(--indigo-soft);border:1px solid var(--indigo-line);}
+.badge-emerald{color:var(--emerald-3);background:var(--emerald-soft);border:1px solid var(--emerald-line);}
+.badge-sky{color:#7dd3fc;background:var(--sky-soft);border:1px solid var(--sky-line);}
+.badge-amber{color:#fcd34d;background:var(--amber-soft);border:1px solid var(--amber-line);}
+
+.card-desc{
+  font-size:13.3px;
+  line-height:1.65;
+  color:var(--ink-2);
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  letter-spacing:-.003em;
+}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:7px;
+  font-size:11px;
+  font-weight:500;
+  color:var(--ink-1);
+  background:rgba(255,255,255,.028);
+  border:1px solid var(--line-1);
+  letter-spacing:.005em;
+}
+.chip::before{
+  content:'';
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--emerald-2);
+  box-shadow:0 0 6px rgba(16,185,129,.9);
+  flex:none;
+}
+
+.url-box{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 10px 10px 13px;
+  border-radius:var(--r-sm);
+  background:rgba(0,0,0,.42);
+  border:1px solid var(--line-1);
+  min-width:0;
+  transition:border-color .2s ease;
+}
+.url-box:hover{border-color:var(--line-2);}
+.url-box code{
+  flex:1;
+  min-width:0;
+  font-size:11.8px;
+  color:#93a1c4;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  direction:ltr;
+  letter-spacing:-.005em;
+}
+
+.card-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:auto;
+}
+.card-actions .btn{padding:10px 12px;font-size:12.8px;}
+
+/* Empty state */
+.empty-state{
+  padding:80px 24px;
+  text-align:center;
+  border-radius:var(--r-lg);
+  border:1px dashed var(--line-2);
+  background:var(--glass-1);
+}
+.empty-state h3{font-size:17px;margin-bottom:8px;letter-spacing:-.02em;}
+.empty-state p{color:var(--ink-2);font-size:13.5px;}
+
+/* ==========================================================================
+   7. MODALS
+   ========================================================================== */
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  background:rgba(3,4,8,.78);
+  backdrop-filter:blur(10px) saturate(140%);
+  -webkit-backdrop-filter:blur(10px) saturate(140%);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .24s ease, visibility .24s ease;
+}
+.modal-overlay.is-open{opacity:1;visibility:visible;}
+
+.modal{
+  width:min(740px,100%);
+  max-height:88vh;
+  overflow-y:auto;
+  border-radius:20px;
+  background:linear-gradient(180deg,#0d1017 0%,#080a10 100%);
+  border:1px solid var(--line-2);
+  box-shadow:
+    0 50px 100px -40px rgba(0,0,0,.95),
+    inset 0 1px 0 rgba(255,255,255,.06);
+  transform:translateY(18px) scale(.985);
+  transition:transform .3s var(--ease-out-expo);
+  overscroll-behavior:contain;
+}
+.modal-overlay.is-open .modal{transform:none;}
+.modal-sm{width:min(540px,100%);}
+
+.modal-head{
+  position:sticky;
+  top:0;
+  z-index:2;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  padding:24px 26px 20px;
+  background:linear-gradient(180deg, #0d1017 78%, rgba(13,16,23,.85));
+  border-bottom:1px solid var(--line-1);
+}
+.modal-eyebrow{
+  display:block;
+  font-size:10.5px;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--indigo-3);
+  margin-bottom:6px;
+}
+.modal-head h2{
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:-.028em;
+  line-height:1.22;
+  color:var(--ink-0);
+}
+.modal-body{padding:24px 26px 28px;}
+
+.label{
+  display:block;
+  font-size:10.5px;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+  margin-bottom:9px;
+}
+
+.section-title{
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:-.005em;
+  color:var(--ink-0);
+  margin:26px 0 14px;
+}
+
+.steps{
+  list-style:none;
+  counter-reset:step;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:0;
+}
+.steps li{
+  counter-increment:step;
+  position:relative;
+  padding-left:38px;
+  font-size:13.4px;
+  line-height:1.65;
+  color:var(--ink-2);
+  letter-spacing:-.003em;
+}
+.steps li::before{
+  content:counter(step);
+  position:absolute;
+  left:0;
+  top:0;
+  width:24px;
+  height:24px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  font-size:11px;
+  font-weight:700;
+  color:var(--indigo-3);
+  background:var(--indigo-soft);
+  border:1px solid var(--indigo-line);
+}
+.steps strong{color:var(--ink-0);font-weight:600;}
+.steps a{
+  color:var(--emerald-3);
+  text-decoration:underline;
+  text-underline-offset:3px;
+  text-decoration-thickness:1px;
+}
+.steps a:hover{color:#a7f3d0;}
+.steps code{
+  font-size:12px;
+  padding:2px 6px;
+  border-radius:6px;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line-1);
+  color:#c9d1e6;
+}
+
+.code-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:24px 0 12px;
+  flex-wrap:wrap;
+}
+.tabs{
+  display:flex;
+  gap:4px;
+  padding:4px;
+  border-radius:10px;
+  background:rgba(255,255,255,.032);
+  border:1px solid var(--line-1);
+}
+.tab{
+  padding:6px 14px;
+  border-radius:7px;
+  font-size:12px;
+  font-weight:600;
+  color:var(--ink-2);
+  transition:background .16s ease,color .16s ease;
+  letter-spacing:-.003em;
+  position:relative;
+  overflow:hidden;
+}
+.tab:hover{color:#fff;}
+.tab:active{transform:scale(0.96);}
+.tab.is-active{
+  color:#fff;
+  background:linear-gradient(180deg,#6366f1,#4f46e5);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.code-block{
+  margin:0;
+  padding:18px 20px;
+  border-radius:14px;
+  background:#06080d;
+  border:1px solid var(--line-1);
+  overflow-x:auto;
+  font-family:var(--font-mono);
+  font-size:12.4px;
+  line-height:1.72;
+  color:#c9d1e6;
+  white-space:pre;
+  tab-size:2;
+  letter-spacing:-.002em;
+}
+
+.hint{
+  margin-top:16px;
+  font-size:12px;
+  line-height:1.65;
+  color:var(--ink-3);
+}
+.hint.center{text-align:center;}
+.hint code{
+  font-size:11.5px;
+  padding:1px 6px;
+  border-radius:5px;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line-1);
+  color:#c9d1e6;
+}
+
+/* ==========================================================================
+   8. FORMS
+   ========================================================================== */
+.form{display:flex;flex-direction:column;gap:16px;}
+.field{display:flex;flex-direction:column;gap:7px;}
+.field label{
+  font-size:12px;
+  font-weight:600;
+  color:var(--ink-1);
+  letter-spacing:-.003em;
+}
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  padding:11px 14px;
+  border-radius:10px;
+  font-size:13.5px;
+  color:var(--ink-0);
+  background:rgba(255,255,255,.032);
+  border:1px solid var(--line-2);
+  outline:none;
+  transition:border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  resize:vertical;
+  letter-spacing:-.003em;
+}
+.field input::placeholder,
+.field textarea::placeholder{color:var(--ink-3);}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:var(--indigo-line);
+  background:rgba(255,255,255,.05);
+  box-shadow:0 0 0 3px rgba(99,102,241,.14);
+}
+.field select option{background:#0d1017;color:var(--ink-0);}
+
+/* ==========================================================================
+   9. TOAST
+   ========================================================================== */
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:32px;
+  z-index:200;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:13px 22px;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:-.003em;
+  color:#031712;
+  background:linear-gradient(180deg,#34d399,#10b981);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:
+    0 22px 48px -18px rgba(16,185,129,.95),
+    inset 0 1px 0 rgba(255,255,255,.3);
+  transform:translate(-50%,90px);
+  opacity:0;
+  visibility:hidden;
+  transition:transform .36s var(--ease-out-expo), opacity .28s ease, visibility .28s ease;
+  pointer-events:none;
+  white-space:nowrap;
+}
+.toast.is-visible{transform:translate(-50%,0);opacity:1;visibility:visible;}
+
+/* ==========================================================================
+   10. FOOTER
+   ========================================================================== */
+.site-footer{
+  border-top:1px solid var(--line-1);
+  background:rgba(255,255,255,.012);
+  padding:56px 0 36px;
+  position:relative;
+}
+.footer-inner{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:32px;
+}
+.footer-brand{max-width:400px;}
+.footer-brand p{
+  margin-top:16px;
+  font-size:12.8px;
+  line-height:1.72;
+  color:var(--ink-3);
+  letter-spacing:-.003em;
+}
+.footer-links{display:flex;flex-wrap:wrap;gap:32px;}
+.footer-col h4{
+  font-size:10.5px;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+  margin-bottom:13px;
+}
+.footer-col a{
+  display:block;
+  font-size:12.8px;
+  color:var(--ink-2);
+  padding:4px 0;
+  transition:color .16s ease;
+  letter-spacing:-.003em;
+}
+.footer-col a:hover{color:var(--emerald-3);}
+
+.footer-bottom{
+  margin-top:40px;
+  padding-top:22px;
+  border-top:1px solid var(--line-1);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:10px;
+  font-size:12px;
+  color:var(--ink-3);
+  letter-spacing:-.003em;
+}
+
+/* ==========================================================================
+   11. SCROLL-REVEAL & MOTION SYSTEM
+   --------------------------------------------------------------------------
+   Elements marked .reveal start hidden (opacity 0, translateY 40px,
+   scale .95). IntersectionObserver adds .is-visible, which transitions
+   them to their resting state with the shared --ease-out-expo curve.
+   Only active when html has the .js class, so no-JS visitors see content.
+   ========================================================================== */
+html.js .reveal{
+  opacity:0;
+  transform:translateY(40px) scale(0.95);
+  transition:
+    opacity 0.9s var(--ease-out-expo),
+    transform 0.9s var(--ease-out-expo);
+  will-change:transform, opacity;
+}
+html.js .reveal.is-visible{
+  opacity:1;
+  transform:none;
+}
+
+/* Hero cascade — visible immediately on load, so stagger via delays */
+html.js .hero-badge-wrap{transition-delay:0ms;}
+html.js .hero h1{transition-delay:80ms;}
+html.js .hero-sub{transition-delay:160ms;}
+html.js .search-wrap{transition-delay:240ms;}
+html.js .filters{transition-delay:320ms;}
+html.js .result-count{transition-delay:400ms;}
+
+/* ==========================================================================
+   12. INTERACTIVE EFFECTS — RIPPLE + SPOTLIGHT
+   --------------------------------------------------------------------------
+   The ripple is a <span> appended by JS at the pointer position inside
+   any interactive host (.btn, .card, .pill, .copy-btn, .icon-btn, .tab).
+   Hosts already declare position:relative + overflow:hidden so the ripple
+   is clipped to the element and animates smoothly on the GPU.
+   ========================================================================== */
+.ripple{
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(
+    circle,
+    rgba(255,255,255,.45) 0%,
+    rgba(255,255,255,.10) 40%,
+    transparent 70%
+  );
+  transform:translate(-50%, -50%) scale(0);
+  opacity:.7;
+  transition:
+    transform .68s var(--ease-out-expo),
+    opacity .68s ease;
+  will-change:transform, opacity;
+  z-index:999;
+}
+.ripple.is-active{
+  transform:translate(-50%, -50%) scale(1);
+  opacity:0;
+}
+
+/* Reduced-motion: switch the reveal system off entirely so content
+   is instantly readable. */
+@media (prefers-reduced-motion: reduce){
+  html.js .reveal{
+    opacity:1 !important;
+    transform:none !important;
+    transition:none !important;
+  }
+  .hero-badge{animation:none !important;}
+  .pulse-dot{animation:none !important;}
+  .ripple{display:none !important;}
+}
+
+/* ==========================================================================
+   13. RESPONSIVE
+   ========================================================================== */
+@media (max-width:860px){
+  .hero{padding:68px 0 44px;}
+  .footer-links{gap:36px;}
+}
+
+@media (max-width:720px){
+  .header-inner{height:64px;}
+  .brand-sub{display:none;}
+  .brand-mark{width:34px;height:34px;font-size:14px;}
+  .brand-title{font-size:14.5px;}
+
+  .hero{padding:56px 0 36px;}
+  .hero h1{letter-spacing:-.036em;}
+  .hero-sub{margin-bottom:34px;}
+
+  .search-input{padding:15px 88px 15px 44px;font-size:14px;}
+  .search-kbd{display:none;}
+
+  .grid-section{padding-bottom:70px;}
+
+  .modal-head{padding:20px 20px 16px;}
+  .modal-head h2{font-size:18px;}
+  .modal-body{padding:20px 20px 24px;}
+  .modal{max-height:92vh;border-radius:16px;}
+
+  .footer-inner{flex-direction:column;}
+  .footer-links{gap:32px;}
+}
+
+@media (max-width:440px){
+  .container{padding:0 18px;}
+  .card{padding:20px;}
+  .card-actions{grid-template-columns:1fr;}
+  .btn{padding:11px 16px;font-size:13px;}
+  .header-actions .btn{padding:9px 13px;font-size:12.5px;}
+  .badge{font-size:10px;}
+  .code-head{flex-direction:column;align-items:flex-start;}
+}
+
+/* Global reduced-motion safety net */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    transition-duration:.001ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="#" aria-label="FreeAI API Hub home">
+      <span class="brand-mark" aria-hidden="true">FA</span>
+      <span class="brand-meta">
+        <span class="brand-title">FreeAI API Hub</span>
+        <span class="brand-sub">Developer Directory</span>
+      </span>
+    </a>
+
+    <div class="header-actions">
+      <button class="btn btn-emerald" id="openSubmitBtn" type="button">
+        + Submit a Free API
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============================================================
+       HERO + SEARCH + FILTERS
+       ============================================================ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge-wrap reveal">
+        <span class="hero-badge">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          8 free AI providers indexed — updated daily
+        </span>
+      </div>
+
+      <h1 class="reveal">Discover <span class="grad">Free AI APIs</span><br />in One Place</h1>
+
+      <p class="hero-sub reveal">
+        Skip the billing pages. Every provider below ships an OpenAI-compatible
+        endpoint with a genuine free tier — so you can prototype, ship and scale
+        AI features without a single dollar of upfront cost.
+      </p>
+
+      <!-- Search -->
+      <div class="search-wrap reveal">
+        <span class="search-icon" aria-hidden="true">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <input
+          id="searchInput"
+          class="search-input"
+          type="search"
+          placeholder="Search providers, models or tags…"
+          autocomplete="off"
+          aria-label="Search AI API providers"
+        />
+        <span class="search-kbd" aria-hidden="true"><kbd>/</kbd></span>
+      </div>
+
+      <!-- Category pills (generated by JS) -->
+      <div class="filters reveal" id="filterBar" role="group" aria-label="Filter by category"></div>
+
+      <p class="result-count reveal" id="resultCount" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROVIDER CARD GRID
+       ============================================================ -->
+  <section class="grid-section">
+    <div class="container">
+      <div class="card-grid" id="cardGrid"></div>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <h3>No providers matched your search</h3>
+        <p>Try a different keyword, or reset the category filter to “All”.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="#">
+          <span class="brand-mark" aria-hidden="true">FA</span>
+          <span class="brand-meta">
+            <span class="brand-title">FreeAI API Hub</span>
+            <span class="brand-sub">Developer Directory</span>
+          </span>
+        </a>
+        <p>
+          An independent, community-curated directory of AI providers offering
+          free tiers. We are not affiliated with any listed vendor — always
+          review each provider’s terms before using their service in production.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Directory</h4>
+          <a href="#cardGrid">All Providers</a>
+          <a href="#" id="footerSubmitLink">Submit an API</a>
+          <a href="#cardGrid">Open Source Models</a>
+        </div>
+        <div class="footer-col">
+          <h4>Documentation</h4>
+          <a href="https://platform.openai.com/docs/api-reference" target="_blank" rel="noopener noreferrer">OpenAI-Compatible Spec</a>
+          <a href="https://curl.se/docs/" target="_blank" rel="noopener noreferrer">cURL Reference</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank" rel="noopener noreferrer">Fetch API Guide</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; <span id="year">2025</span> FreeAI API Hub. All rights reserved.</span>
+      <span>Built with vanilla HTML, CSS &amp; JavaScript — no frameworks.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     MODAL: INTEGRATION GUIDE
+     ============================================================ -->
+<div class="modal-overlay" id="guideModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+    <div class="modal-head">
+      <div>
+        <span class="modal-eyebrow">Integration Guide</span>
+        <h2 id="guideTitle">Provider</h2>
+      </div>
+      <button class="icon-btn" data-close type="button" aria-label="Close guide">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div>
+        <span class="label">Base URL</span>
+        <div class="url-box">
+          <code id="guideBaseUrl"></code>
+          <button class="copy-btn" data-copy-target="guideBaseUrl" type="button">Copy</button>
+        </div>
+      </div>
+
+      <h3 class="section-title">Step-by-step setup</h3>
+      <ol class="steps">
+        <li>
+          Create a free account at
+          <a id="guideSignup" href="#" target="_blank" rel="noopener noreferrer">the provider dashboard</a>
+          — no credit card is required for the free tier.
+        </li>
+        <li>Open the API keys page, click <strong>Create new key</strong> and copy the value.</li>
+        <li>
+          Store the key as an environment variable named
+          <code>FREEAI_API_KEY</code>. Never commit it to Git.
+        </li>
+        <li>
+          Point your OpenAI SDK at the <strong>Base URL</strong> above — every
+          provider in this directory speaks the OpenAI Chat Completions format.
+        </li>
+        <li>Run one of the snippets below to send your first request.</li>
+      </ol>
+
+      <div class="code-head">
+        <div class="tabs" role="tablist" aria-label="Code language">
+          <button class="tab is-active" data-tab="curl" role="tab" type="button" aria-selected="true">cURL</button>
+          <button class="tab" data-tab="js" role="tab" type="button" aria-selected="false">JavaScript</button>
+        </div>
+        <button class="copy-btn" data-copy-target="guideCode" type="button">Copy Code</button>
+      </div>
+
+      <pre class="code-block"><code id="guideCode"></code></pre>
+
+      <p class="hint">
+        Tip: replace the <code>"model"</code> value with any model id listed in the
+        provider's dashboard. Free tiers usually expose a smaller subset of models.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: SUBMIT A FREE API (UI DEMO FORM)
+     ============================================================ -->
+<div class="modal-overlay" id="submitModal" aria-hidden="true">
+  <div class="modal modal-sm" role="dialog" aria-modal="true" aria-labelledby="submitTitle">
+    <div class="modal-head">
+      <div>
+        <span class="modal-eyebrow">Community</span>
+        <h2 id="submitTitle">Submit a Free API</h2>
+      </div>
+      <button class="icon-btn" data-close type="button" aria-label="Close form">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <form class="modal-body form" id="submitForm" novalidate>
+      <div class="field">
+        <label for="f-name">Provider name</label>
+        <input id="f-name" type="text" placeholder="e.g. Mistral AI" required />
+      </div>
+      <div class="field">
+        <label for="f-url">API key page URL</label>
+        <input id="f-url" type="url" placeholder="https://provider.com/api-keys" required />
+      </div>
+      <div class="field">
+        <label for="f-base">Base URL</label>
+        <input id="f-base" type="url" placeholder="https://api.provider.com/v1" required />
+      </div>
+      <div class="field">
+        <label for="f-cat">Category</label>
+        <select id="f-cat">
+          <option>Text/LLM</option>
+          <option>Fast Inference</option>
+          <option>Open Source</option>
+          <option>No Credit Card</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-desc">Short description</label>
+        <textarea id="f-desc" rows="3" placeholder="Which models does it offer on the free tier?"></textarea>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">Submit for review</button>
+      <p class="hint center">
+        This is a demo form. Connect it to your backend, Formspree or Airtable
+        before going live.
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ==========================================================================
+   FREEAI API HUB — APPLICATION SCRIPT
+   --------------------------------------------------------------------------
+   Structure:
+     1. Data model (PROVIDERS)  ← add / edit providers here
+     2. State + DOM references
+     3. Utilities
+     4. Rendering (filters, cards)
+     5. Clipboard + toast
+     6. Modal system
+     7. Integration guide builder
+     8. Scroll-reveal system   ← NEW
+     9. Interactive effects    ← NEW (ripple, spotlight)
+    10. Global event listeners
+    11. Init
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. DATA MODEL
+   --------------------------------------------------------------------------
+   ADD A NEW PROVIDER:
+   Copy any object below and paste it at the end of the array, then edit the
+   fields. `id` must be unique. `tags` values should match one of CATEGORIES
+   so the filter pills keep working.
+
+   Field reference:
+     id          {string}  unique slug (used for data attributes)
+     name        {string}  display name
+     url         {string}  where the visitor gets an API key
+     baseUrl     {string}  OpenAI-compatible base URL (copy button + snippets)
+     tags        {string[]} used for the category filter pills
+     highlights  {string[]} short feature chips shown on the card
+     description {string}  2-line summary of supported models
+     sampleModel {string}  model id pre-filled into the code snippets
+   ========================================================================== */
+const PROVIDERS = [
+  {
+    id: 'google-ai-studio',
+    name: 'Google AI Studio',
+    url: 'https://aistudio.google.com/api-keys',
+    baseUrl: 'https://generativelanguage.googleapis.com/v1beta/openai/',
+    tags: ['Text/LLM', 'No Credit Card'],
+    highlights: ['Free Tier Available', '1M Token Context', 'OpenAI-Compatible'],
+    description: 'Gemini Flash & Pro exposed through an OpenAI-compatible endpoint. Huge context windows, multimodal input and a generous free quota.',
+    sampleModel: 'gemini-2.0-flash'
+  },
+  {
+    id: 'groq-cloud',
+    name: 'Groq Cloud',
+    url: 'https://console.groq.com/keys',
+    baseUrl: 'https://api.groq.com/openai/v1',
+    tags: ['Fast Inference', 'Text/LLM', 'No Credit Card'],
+    highlights: ['Free Tier Available', 'Ultra-Low Latency', 'OpenAI-Compatible'],
+    description: 'Llama 3, Mixtral and Gemma running on custom LPU hardware. Blazing-fast token generation — ideal for real-time chat and streaming.',
+    sampleModel: 'llama-3.1-8b-instant'
+  },
+  {
+    id: 'openrouter',
+    name: 'OpenRouter',
+    url: 'https://openrouter.ai/keys',
+    baseUrl: 'https://openrouter.ai/api/v1',
+    tags: ['Text/LLM', 'Open Source', 'No Credit Card'],
+    highlights: [':free Model Catalogue', 'Unified API', 'OpenAI-Compatible'],
+    description: 'One unified API for dozens of upstream providers, including a rotating catalogue of :free models from Meta, Mistral, Google and more.',
+    sampleModel: 'meta-llama/llama-3.1-8b-instruct:free'
+  },
+  {
+    id: 'hugging-face',
+    name: 'Hugging Face',
+    url: 'https://huggingface.co/settings/tokens',
+    baseUrl: 'https://router.huggingface.co/v1',
+    tags: ['Open Source', 'Text/LLM'],
+    highlights: ['Free Inference Credits', 'Thousands of Models', 'OpenAI-Compatible'],
+    description: 'Serverless inference router giving access to thousands of open models — text, vision and embeddings — with free monthly credits.',
+    sampleModel: 'meta-llama/Llama-3.2-3B-Instruct'
+  },
+  {
+    id: 'cerebras',
+    name: 'Cerebras',
+    url: 'https://cloud.cerebras.ai/',
+    baseUrl: 'https://api.cerebras.ai/v1',
+    tags: ['Fast Inference', 'Text/LLM'],
+    highlights: ['Free Tier Available', 'Wafer-Scale Speed', 'OpenAI-Compatible'],
+    description: 'World’s fastest inference on wafer-scale chips. Run Llama and Qwen series models at thousands of tokens per second.',
+    sampleModel: 'llama3.1-8b'
+  },
+  {
+    id: 'together-ai',
+    name: 'Together AI',
+    url: 'https://api.together.xyz/settings/api-keys',
+    baseUrl: 'https://api.together.xyz/v1',
+    tags: ['Open Source', 'Text/LLM'],
+    highlights: ['Free Starter Credits', 'Open-Weights Models', 'OpenAI-Compatible'],
+    description: 'Open-weights model hosting with fast, low-cost inference and free starter credits for Llama, Qwen, Mixtral and more.',
+    sampleModel: 'meta-llama/Llama-3.3-70B-Instruct-Turbo'
+  },
+  {
+    id: '100milionseek',
+    name: '100MilionSeek',
+    url: 'https://100milionseek.top/dashboard',
+    baseUrl: 'https://100milionseek.top/v1',
+    tags: ['Text/LLM', 'No Credit Card'],
+    highlights: ['400M Tokens/Day Free', 'No Credit Card', 'OpenAI-Compatible'],
+    description: 'Community gateway offering 400 million free tokens per day on popular chat models — perfect for prototyping and side projects.',
+    sampleModel: 'gpt-4o-mini'
+  },
+  {
+    id: 'coarena-ai',
+    name: 'Coarena.Ai',
+    url: 'https://coarena.ai/account/api',
+    baseUrl: 'https://coarena.ai/api/v1',
+    tags: ['Text/LLM', 'No Credit Card'],
+    highlights: ['$5 Free Tokens/Day', 'No Credit Card', 'OpenAI-Compatible'],
+    description: 'Daily-refreshing free token allowance worth $5, usable across a range of OpenAI-compatible chat and embedding models.',
+    sampleModel: 'gpt-4o-mini'
+  }
+];
+
+/* Category pills shown under the search bar (order matters). */
+const CATEGORIES = ['All', 'Text/LLM', 'Fast Inference', 'Open Source', 'No Credit Card'];
+
+/* Maps a tag to its badge colour class. Add new tags here as needed. */
+const TAG_CLASS = {
+  'Text/LLM': 'badge-indigo',
+  'Fast Inference': 'badge-emerald',
+  'Open Source': 'badge-sky',
+  'No Credit Card': 'badge-amber'
+};
+
+
+/* ==========================================================================
+   2. STATE + DOM REFERENCES
+   ========================================================================== */
+const state = {
+  query: '',
+  category: 'All',
+  activeProviderId: null,
+  activeTab: 'curl'
+};
+
+const els = {
+  searchInput : document.getElementById('searchInput'),
+  filterBar   : document.getElementById('filterBar'),
+  cardGrid    : document.getElementById('cardGrid'),
+  resultCount : document.getElementById('resultCount'),
+  emptyState  : document.getElementById('emptyState'),
+  toast       : document.getElementById('toast'),
+
+  guideModal  : document.getElementById('guideModal'),
+  guideTitle  : document.getElementById('guideTitle'),
+  guideSignup : document.getElementById('guideSignup'),
+  guideBaseUrl: document.getElementById('guideBaseUrl'),
+  guideCode   : document.getElementById('guideCode'),
+
+  submitModal : document.getElementById('submitModal'),
+  submitForm  : document.getElementById('submitForm'),
+  openSubmitBtn: document.getElementById('openSubmitBtn'),
+  footerSubmitLink: document.getElementById('footerSubmitLink'),
+
+  year        : document.getElementById('year')
+};
+
+
+/* ==========================================================================
+   3. UTILITIES
+   ========================================================================== */
+
+function esc(value){
+  return String(value).replace(/[&<>"']/g, function (ch) {
+    return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[ch];
+  });
+}
+
+function trimSlash(url){
+  return String(url).replace(/\/+$/, '');
+}
+
+
+/* ==========================================================================
+   4. RENDERING
+   ========================================================================== */
+
+function renderFilters(){
+  els.filterBar.innerHTML = CATEGORIES.map(function (cat) {
+    const active = cat === state.category ? ' is-active' : '';
+    return '<button type="button" class="pill' + active + '" data-category="' +
+           esc(cat) + '" aria-pressed="' + (cat === state.category) + '">' +
+           esc(cat) + '</button>';
+  }).join('');
+}
+
+function buildCard(provider){
+  const badges = provider.tags.map(function (tag) {
+    const cls = TAG_CLASS[tag] || 'badge-indigo';
+    return '<span class="badge ' + cls + '">' + esc(tag) + '</span>';
+  }).join('');
+
+  const chips = provider.highlights.map(function (h) {
+    return '<span class="chip">' + esc(h) + '</span>';
+  }).join('');
+
+  return [
+    '<article class="card reveal" data-id="' + esc(provider.id) + '">',
+
+      '<div class="card-head">',
+        '<div class="avatar" aria-hidden="true">' + esc(provider.name.charAt(0)) + '</div>',
+        '<div class="card-title">',
+          '<h3>' + esc(provider.name) + '</h3>',
+          '<div class="badges">' + badges + '</div>',
+        '</div>',
+      '</div>',
+
+      '<p class="card-desc">' + esc(provider.description) + '</p>',
+
+      '<div class="chips">' + chips + '</div>',
+
+      '<div class="url-box">',
+        '<code title="' + esc(provider.baseUrl) + '">' + esc(provider.baseUrl) + '</code>',
+        '<button class="copy-btn" type="button" data-copy="' + esc(provider.baseUrl) +
+          '" aria-label="Copy base URL for ' + esc(provider.name) + '">Copy</button>',
+      '</div>',
+
+      '<div class="card-actions">',
+        '<a class="btn btn-primary" href="' + esc(provider.url) +
+          '" target="_blank" rel="noopener noreferrer">Get API Key ↗</a>',
+        '<button class="btn btn-ghost" type="button" data-guide="' +
+          esc(provider.id) + '">Integration Guide</button>',
+      '</div>',
+
+    '</article>'
+  ].join('');
+}
+
+function renderCards(){
+  const q = state.query.trim().toLowerCase();
+
+  const results = PROVIDERS.filter(function (p) {
+    const matchesCategory = state.category === 'All' || p.tags.indexOf(state.category) !== -1;
+    if (!matchesCategory) return false;
+    if (!q) return true;
+
+    const haystack = [p.name, p.description, p.sampleModel, p.baseUrl]
+      .concat(p.tags)
+      .concat(p.highlights)
+      .join(' ')
+      .toLowerCase();
+
+    return haystack.indexOf(q) !== -1;
+  });
+
+  els.cardGrid.innerHTML = results.map(buildCard).join('');
+  els.emptyState.hidden = results.length > 0;
+
+  els.resultCount.textContent =
+    'Showing ' + results.length + ' of ' + PROVIDERS.length + ' providers' +
+    (state.category !== 'All' ? ' · ' + state.category : '') +
+    (q ? ' · “' + state.query.trim() + '”' : '');
+
+  // Kick off the scroll-reveal cascade for the freshly rendered cards
+  refreshReveals();
+}
+
+
+/* ==========================================================================
+   5. CLIPBOARD + TOAST
+   ========================================================================== */
+let toastTimer = null;
+
+function showToast(message){
+  els.toast.textContent = message;
+  els.toast.classList.add('is-visible');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () {
+    els.toast.classList.remove('is-visible');
+  }, 1800);
+}
+
+function copyText(text){
+  if (navigator.clipboard && window.isSecureContext){
+    return navigator.clipboard.writeText(text).then(function () { return true; })
+      .catch(function () { return legacyCopy(text); });
+  }
+  return Promise.resolve(legacyCopy(text));
+}
+
+function legacyCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed';
+  ta.style.top = '-9999px';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  document.body.removeChild(ta);
+  return ok;
+}
+
+
+/* ==========================================================================
+   6. MODAL SYSTEM
+   ========================================================================== */
+let lastFocusedElement = null;
+
+function openModal(overlay){
+  lastFocusedElement = document.activeElement;
+  overlay.classList.add('is-open');
+  overlay.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+
+  const focusable = overlay.querySelector('button, [href], input, select, textarea');
+  if (focusable) setTimeout(function () { focusable.focus(); }, 70);
+}
+
+function closeModal(overlay){
+  overlay.classList.remove('is-open');
+  overlay.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+
+  if (lastFocusedElement && typeof lastFocusedElement.focus === 'function'){
+    lastFocusedElement.focus();
+  }
+}
+
+function closeAllModals(){
+  document.querySelectorAll('.modal-overlay.is-open').forEach(closeModal);
+}
+
+
+/* ==========================================================================
+   7. INTEGRATION GUIDE BUILDER
+   ========================================================================== */
+
+function buildCurlSnippet(provider){
+  const endpoint = trimSlash(provider.baseUrl) + '/chat/completions';
+  return [
+    'curl -X POST "' + endpoint + '" \\',
+    '  -H "Content-Type: application/json" \\',
+    '  -H "Authorization: Bearer $FREEAI_API_KEY" \\',
+    "  -d '{",
+    '    "model": "' + provider.sampleModel + '",',
+    '    "messages": [',
+    '      { "role": "user", "content": "Hello from FreeAI API Hub!" }',
+    '    ]',
+    "  }'"
+  ].join('\n');
+}
+
+function buildJsSnippet(provider){
+  const endpoint = trimSlash(provider.baseUrl) + '/chat/completions';
+  return [
+    '// Keep this key server-side in production (proxy through your backend).',
+    'const API_KEY  = "YOUR_FREE_API_KEY";',
+    'const ENDPOINT = "' + endpoint + '";',
+    '',
+    'const response = await fetch(ENDPOINT, {',
+    '  method: "POST",',
+    '  headers: {',
+    '    "Content-Type": "application/json",',
+    '    "Authorization": "Bearer " + API_KEY',
+    '  },',
+    '  body: JSON.stringify({',
+    '    model: "' + provider.sampleModel + '",',
+    '    messages: [{ role: "user", content: "Hello from FreeAI API Hub!" }]',
+    '  })',
+    '});',
+    '',
+    'const data = await response.json();',
+    'console.log(data.choices[0].message.content);'
+  ].join('\n');
+}
+
+function renderSnippet(){
+  const provider = PROVIDERS.find(function (p) { return p.id === state.activeProviderId; });
+  if (!provider) return;
+  els.guideCode.textContent = state.activeTab === 'curl'
+    ? buildCurlSnippet(provider)
+    : buildJsSnippet(provider);
+}
+
+function openGuide(providerId){
+  const provider = PROVIDERS.find(function (p) { return p.id === providerId; });
+  if (!provider) return;
+
+  state.activeProviderId = providerId;
+  state.activeTab = 'curl';
+
+  els.guideTitle.textContent = provider.name;
+  els.guideBaseUrl.textContent = provider.baseUrl;
+  els.guideSignup.href = provider.url;
+  els.guideSignup.textContent = provider.name + ' dashboard';
+
+  document.querySelectorAll('#guideModal .tab').forEach(function (tab) {
+    const isCurl = tab.dataset.tab === 'curl';
+    tab.classList.toggle('is-active', isCurl);
+    tab.setAttribute('aria-selected', String(isCurl));
+  });
+
+  renderSnippet();
+  openModal(els.guideModal);
+}
+
+
+/* ==========================================================================
+   8. SCROLL-REVEAL SYSTEM
+   --------------------------------------------------------------------------
+   Any element with the .reveal class is observed by an IntersectionObserver
+   that adds .is-visible once it enters the viewport. The CSS transition
+   then floats it up + scales it in with the shared easing curve.
+   API cards additionally receive a per-card transition-delay so they
+   cascade in sequence (stagger effect).
+   ========================================================================== */
+
+const revealObserver = new IntersectionObserver(function (entries) {
+  entries.forEach(function (entry) {
+    if (!entry.isIntersecting) return;
+
+    const el = entry.target;
+    const delay = parseFloat(el.style.transitionDelay) || 0;
+
+    el.classList.add('is-visible');
+    revealObserver.unobserve(el);
+
+    // Clear stagger delay + will-change hint once the transition settles,
+    // so hover / press transforms feel instant afterwards.
+    setTimeout(function () {
+      el.style.transitionDelay = '';
+      el.style.willChange = 'auto';
+    }, delay + 1000);
+  });
+}, {
+  threshold: 0.08,
+  rootMargin: '0px 0px -40px 0px'
+});
+
+/**
+ * Refresh reveal state for the whole document:
+ *   - Assigns a staggered transition-delay to every card in the grid
+ *   - Observes every not-yet-visible .reveal element
+ * Called on first load and after every renderCards().
+ */
+function refreshReveals(){
+  // Stagger cards (cap at ~320 ms so big grids still feel snappy)
+  els.cardGrid.querySelectorAll('.card').forEach(function (card, i) {
+    card.style.transitionDelay = Math.min(i * 40, 320) + 'ms';
+  });
+
+  // Observe all unrevealed elements (hero items + cards + result count)
+  document.querySelectorAll('.reveal:not(.is-visible)').forEach(function (el) {
+    revealObserver.observe(el);
+  });
+}
+
+
+/* ==========================================================================
+   9. INTERACTIVE EFFECTS
+   ========================================================================== */
+
+/* ---- 9a. Material-style touch ripple --------------------------------
+   Fires on pointerdown for every interactive host. The ripple is a
+   <span> inserted at the exact pointer coordinates and animated via CSS.
+   Uses `closest()` so clicking a nested button only ripples that button.
+   -------------------------------------------------------------------- */
+const RIPPLE_SELECTOR = '.btn, .card, .pill, .copy-btn, .icon-btn, .tab';
+
+document.addEventListener('pointerdown', function (e) {
+  const host = e.target.closest(RIPPLE_SELECTOR);
+  if (!host) return;
+
+  // Only ripple on primary button or touch — avoids accidental ripples
+  // on secondary mouse buttons.
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+  const rect = host.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height) * 2;
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  ripple.style.left = x + 'px';
+  ripple.style.top  = y + 'px';
+  ripple.style.width = ripple.style.height = size + 'px';
+
+  host.appendChild(ripple);
+
+  // Kick off the CSS transition on the next frame
+  requestAnimationFrame(function () {
+    ripple.classList.add('is-active');
+  });
+
+  // Remove the node once the animation is done
+  setTimeout(function () {
+    if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
+  }, 700);
+}, { passive: true });
+
+
+/* ---- 9b. Cursor / touch spotlight on cards --------------------------
+   Tracks pointer position over the grid and writes --mx / --my custom
+   properties on the hovered card. The card's ::after pseudo-element
+   uses those to paint a radial glow that follows the pointer. RAF
+   throttled so rapid moves don't thrash style recalculation.
+   -------------------------------------------------------------------- */
+let spotlightRAF = null;
+
+els.cardGrid.addEventListener('pointermove', function (e) {
+  if (spotlightRAF) return;
+
+  spotlightRAF = requestAnimationFrame(function () {
+    spotlightRAF = null;
+
+    const card = e.target.closest('.card');
+    if (!card) return;
+
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+    card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+  });
+}, { passive: true });
+
+// Clear the glow when the pointer leaves the grid entirely
+els.cardGrid.addEventListener('pointerleave', function () {
+  els.cardGrid.querySelectorAll('.card').forEach(function (card) {
+    card.style.removeProperty('--mx');
+    card.style.removeProperty('--my');
+  });
+}, { passive: true });
+
+
+/* ==========================================================================
+   10. GLOBAL EVENT LISTENERS
+   ========================================================================== */
+
+/* ---- Search (debounced so typing doesn't re-trigger card animations
+        on every keystroke — animates only when input settles) ---- */
+let searchTimeout = null;
+els.searchInput.addEventListener('input', function (e) {
+  state.query = e.target.value;
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(renderCards, 120);
+});
+
+/* ---- Category pills (delegated) ---- */
+els.filterBar.addEventListener('click', function (e) {
+  const pill = e.target.closest('[data-category]');
+  if (!pill) return;
+
+  state.category = pill.dataset.category;
+  renderFilters();
+  renderCards();
+});
+
+/* ---- Card actions: guide button (delegated from the grid) ---- */
+els.cardGrid.addEventListener('click', function (e) {
+  const guideBtn = e.target.closest('[data-guide]');
+  if (guideBtn){
+    openGuide(guideBtn.dataset.guide);
+  }
+});
+
+/* ---- Clipboard: any [data-copy] or [data-copy-target] button ---- */
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('[data-copy], [data-copy-target]');
+  if (!btn) return;
+
+  let text = btn.dataset.copy;
+  if (!text && btn.dataset.copyTarget){
+    const target = document.getElementById(btn.dataset.copyTarget);
+    text = target ? target.textContent : '';
+  }
+  if (!text) return;
+
+  copyText(text).then(function (ok) {
+    showToast(ok ? '✓ Copied to clipboard' : '✕ Copy failed — select manually');
+    if (ok){
+      const original = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(function () { btn.textContent = original; }, 1400);
+    }
+  });
+});
+
+/* ---- Code language tabs inside the guide modal ---- */
+document.querySelectorAll('#guideModal .tab').forEach(function (tab) {
+  tab.addEventListener('click', function () {
+    state.activeTab = tab.dataset.tab;
+
+    document.querySelectorAll('#guideModal .tab').forEach(function (t) {
+      const active = t === tab;
+      t.classList.toggle('is-active', active);
+      t.setAttribute('aria-selected', String(active));
+    });
+
+    renderSnippet();
+  });
+});
+
+/* ---- Close buttons inside modals ---- */
+document.querySelectorAll('[data-close]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    closeModal(btn.closest('.modal-overlay'));
+  });
+});
+
+/* ---- Backdrop click closes the modal ---- */
+document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) closeModal(overlay);
+  });
+});
+
+/* ---- Escape closes modals; "/" focuses the search field ---- */
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') closeAllModals();
+
+  if (e.key === '/' && document.activeElement !== els.searchInput &&
+      !document.querySelector('.modal-overlay.is-open')){
+    e.preventDefault();
+    els.searchInput.focus();
+  }
+});
+
+/* ---- Submit-an-API modal triggers ---- */
+function openSubmitModal(){
+  els.submitForm.reset();
+  openModal(els.submitModal);
+}
+
+els.openSubmitBtn.addEventListener('click', openSubmitModal);
+els.footerSubmitLink.addEventListener('click', function (e) {
+  e.preventDefault();
+  openSubmitModal();
+});
+
+/* ---- Demo submit form ---- */
+els.submitForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const name = document.getElementById('f-name');
+  const url  = document.getElementById('f-url');
+  const base = document.getElementById('f-base');
+
+  if (!name.value.trim() || !url.value.trim() || !base.value.trim()){
+    showToast('Please fill in name, key URL and base URL');
+    return;
+  }
+
+  closeModal(els.submitModal);
+  showToast('✓ Thanks! Your submission was recorded (demo)');
+  els.submitForm.reset();
+});
+
+
+/* ==========================================================================
+   11. INIT
+   ========================================================================== */
+(function init(){
+  els.year.textContent = new Date().getFullYear();
+  renderFilters();
+  renderCards();      // renders grid + calls refreshReveals() for cards
+  refreshReveals();   // observes hero .reveal elements on first paint
+})();
+</script>
+</body>
+</html>
